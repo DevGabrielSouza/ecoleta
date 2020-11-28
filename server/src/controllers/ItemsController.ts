@@ -4,7 +4,8 @@ import knex from '../database/connection';
 import API_URL from '../config';
 
 class ItemsController{
-    async get (request: Request, response: Response) {
+    
+    async index (request: Request, response: Response) {
 
         const items = await knex('items').select('*');
     

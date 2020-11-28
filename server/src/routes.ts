@@ -1,6 +1,6 @@
 
 import express from 'express';
-import knex from './database/connection';
+
 import PointsController from './controllers/PointsController';
 import ItemsController from './controllers/ItemsController';
 
@@ -14,8 +14,10 @@ routes.get('/', async (request, response) => {
     
 });
 
-routes.get('/items', itemsController.get);
+routes.get('/items', itemsController.index);
 
+routes.get('/points', pointsController.index);
+routes.get('/points/:id', pointsController.show);
 routes.post('/points', pointsController.create);
 
   

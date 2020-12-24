@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 
-class Header extends Component {
-    render() {
-        return (
-            <header>
-                Logo
-            </header>
-        );
-    }
+interface HeaderProps {
+    title: string;
+}
+
+const Header: React.FC<HeaderProps> = (props) => {
+    return(
+        <header>
+            ...
+        </header>
+    );
 }
 
 export default Header;

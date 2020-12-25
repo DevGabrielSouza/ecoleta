@@ -1,11 +1,44 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FiArrowLeft } from 'react-icons/fi';
 import './style.css';
 
 import logo from '../../assets/logo.svg';
+import api from '../../services/api';
+
+interface Item{
+    id: number,
+    title: string,
+    imageUrl: string,
+}
+
+interface Estado{
+    id: number,
+    sigla: string,
+    nome: string,
+}
 
 const CreatePoint = () => {
+
+    const [items, setItems] = useState<Array<Item>>([]);
+    const [estados, setEstados] = useState<Array<Estado>>([]);
+
+    useEffect(() => {
+
+        api.get('items').then(response => {
+            setItems(response.data);
+        })
+
+        fetch('https://servicodados.ibge.gov.br/api/v1/localidades/estados?orderBy=nome').then( async responseEstados => {
+            let estados = await responseEstados.json()
+            setEstados(estados);
+        })
+
+    }, []);
+
+    
+
+
     return (
         <div id="page-create-point">
 
@@ -64,7 +97,10 @@ const CreatePoint = () => {
                         <legend>
                             <h2>Endereço</h2>
                             <span>Selecione o endereço no mapa</span>
+                            
                         </legend>
+
+                        <div id="map"></div>
 
                         <div className="field">
                             <label htmlFor="name">Endereço</label>
@@ -81,6 +117,11 @@ const CreatePoint = () => {
                                 <label htmlFor="uf">Estado (UF)</label>
                                 <select name="uf" id="uf">
                                     <option value="0">Selecione uma UF</option>
+
+                                    {estados.map(estado => (
+                                        <option key={estado.id} value={estado.id}>{estado.sigla}</option>
+                                    ))}
+
                                 </select>
                             </div>
 
@@ -105,20 +146,12 @@ const CreatePoint = () => {
 
                         <ul className="items-grid">
 
-                            <li>
-                                <img src="http://localhost:3333/uploads/oleo.svg" alt="Coleta de resíduos de óleo de cozinha"/>
-                                <span>Óleo de cozinha</span>
-                            </li>
-
-                            <li>
-                                <img src="http://localhost:3333/uploads/oleo.svg" alt="Coleta de resíduos de óleo de cozinha"/>
-                                <span>Óleo de cozinha</span>
-                            </li>
-
-                            <li>
-                                <img src="http://localhost:3333/uploads/oleo.svg" alt="Coleta de resíduos de óleo de cozinha"/>
-                                <span>Óleo de cozinha</span>
-                            </li>
+                            {items.map((item, index) => (
+                                <li key={index}>
+                                    <img src={item.imageUrl} alt={`Coleta de resíduos de ${item.title}`}/>
+                                    <span>{item.title}</span>
+                                </li>
+                            ))}
 
                         </ul>
                         

@@ -104,13 +104,31 @@ const CreatePoint = () => {
                         </legend>
 
                         <ul className="items-grid">
+
                             <li>
-                                <img src="" alt=""/>
+                                <img src="http://localhost:3333/uploads/oleo.svg" alt="Coleta de resíduos de óleo de cozinha"/>
+                                <span>Óleo de cozinha</span>
                             </li>
+
+                            <li>
+                                <img src="http://localhost:3333/uploads/oleo.svg" alt="Coleta de resíduos de óleo de cozinha"/>
+                                <span>Óleo de cozinha</span>
+                            </li>
+
+                            <li>
+                                <img src="http://localhost:3333/uploads/oleo.svg" alt="Coleta de resíduos de óleo de cozinha"/>
+                                <span>Óleo de cozinha</span>
+                            </li>
+
                         </ul>
+                        
 
 
                     </fieldset>
+
+                    <button type="submit">
+                        Cadastrar ponto de coleta
+                    </button>
 
                 </form>
             </main>

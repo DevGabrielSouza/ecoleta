@@ -75,24 +75,6 @@ const CreatePoint = () => {
                             />
                         </div>
 
-                    </fieldset>
-
-                    <fieldset>
-
-                        <legend>
-                            <h2>Ítens de coleta</h2>
-                            <span>Selecione um ou mais ítens abaixo</span>
-                        </legend>
-
-                        <div className="field">
-                            <label htmlFor="name">Endereço</label>
-                            <input 
-                            type="text"
-                            name="name"
-                            id="name"
-                            />
-                        </div>
-
                         <div className="field-group">
 
                             <div className="field">
@@ -111,6 +93,22 @@ const CreatePoint = () => {
                             
 
                         </div>
+
+                    </fieldset>
+
+                    <fieldset>
+
+                        <legend>
+                            <h2>Ítens de coleta</h2>
+                            <span>Selecione um ou mais ítens abaixo</span>
+                        </legend>
+
+                        <ul className="items-grid">
+                            <li>
+                                <img src="" alt=""/>
+                            </li>
+                        </ul>
+
 
                     </fieldset>
 

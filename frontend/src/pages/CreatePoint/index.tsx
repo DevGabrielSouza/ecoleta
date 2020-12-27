@@ -3,9 +3,15 @@ import { Link } from 'react-router-dom';
 import { FiArrowLeft } from 'react-icons/fi';
 import './style.css';
 
+import { withScriptjs, withGoogleMap } from 'react-google-maps';
+
 import logo from '../../assets/logo.svg';
 import api from '../../services/api';
 import axios from 'axios';
+
+import Map from '../../Components/Map';
+
+const WrappedMap = withScriptjs(withGoogleMap(Map));
 
 interface Item{
     id: number,
@@ -134,7 +140,14 @@ const CreatePoint = () => {
                             
                         </legend>
 
-                        <div id="map"></div>
+                        <div className="map" style={{ width: "100%", height: "400px" }}>
+                            <WrappedMap 
+                            googleMapURL={`https://maps.googleapis.com/maps/api/js?key=AIzaSyB3EKzanoc0PUcXz56ZU_V5VFzqVZPY1vM&v=3.exp&libraries=geometry,drawing,places`} 
+                            loadingElement={<div style={{height: "100%"}} />}
+                            containerElement={<div style={{height: "100%"}} />}
+                            mapElement={<div style={{height: "100%"}} />}
+                            />
+                        </div>
 
                         <div className="field">
                             <label htmlFor="name">Endereço</label>

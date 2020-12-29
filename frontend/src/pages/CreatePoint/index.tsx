@@ -10,6 +10,7 @@ import api from '../../services/api';
 import axios from 'axios';
 
 import Map from '../../Components/Map';
+import { ClassLikeDeclaration } from 'typescript';
 
 const WrappedMap = withScriptjs(withGoogleMap(Map));
 
@@ -37,6 +38,15 @@ const CreatePoint = () => {
     const [cities, setCities] = useState<Array<City>>([]);
     const [selectedUf, setSelectedUf] = useState('0');
     const [selectedCity, setSelectedCity] = useState('0');
+    
+    const [selectedItems, setSelectedItems] = useState([]);
+
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        whatsapp: '',
+    });
+
 
     useEffect(() => {
 
@@ -76,6 +86,22 @@ const CreatePoint = () => {
     function handleMapClick(){
         //
     }
+
+    function handleSelectItem(id: number){
+        let currentSelectedItems = [...selectedItems];
+        
+        if( currentSelectedItems[id] ){
+            //remove do array
+        }
+
+    }
+
+
+    function handleInputChange(event: ChangeEvent<HTMLInputElement>){
+        const {name, value} = event.target;
+        setFormData({ ...formData, [name]: value});
+        console.log(formData);
+    }
     
 
 
@@ -106,6 +132,7 @@ const CreatePoint = () => {
                             type="text"
                             name="name"
                             id="name"
+                            onChange={handleInputChange}
                             />
                         </div>
 
@@ -117,6 +144,7 @@ const CreatePoint = () => {
                                 type="email"
                                 name="email"
                                 id="email"
+                                onChange={handleInputChange}
                                 />
                             </div>
 
@@ -126,6 +154,7 @@ const CreatePoint = () => {
                                 type="text"
                                 name="whatsapp"
                                 id="whatsapp"
+                                onChange={handleInputChange}
                                 />
                             </div>
                         </div>
@@ -155,6 +184,7 @@ const CreatePoint = () => {
                             type="text"
                             name="name"
                             id="name"
+                            onChange={handleInputChange}
                             />
                         </div>
 
@@ -198,8 +228,8 @@ const CreatePoint = () => {
 
                         <ul className="items-grid">
 
-                            {items.map((item, index) => (
-                                <li key={index}>
+                            {items.map(item => (
+                                <li key={item.id} onClick={() => handleSelectItem(item.id)}>
                                     <img src={item.imageUrl} alt={`Coleta de resíduos de ${item.title}`}/>
                                     <span>{item.title}</span>
                                 </li>

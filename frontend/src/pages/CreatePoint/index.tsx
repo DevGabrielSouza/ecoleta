@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useLayoutEffect, ChangeEvent } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect, useLayoutEffect, ChangeEvent, FormEvent } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import { FiArrowLeft } from 'react-icons/fi';
 import './style.css';
 
@@ -39,13 +39,15 @@ const CreatePoint = () => {
     const [selectedUf, setSelectedUf] = useState('0');
     const [selectedCity, setSelectedCity] = useState('0');
     
-    const [selectedItems, setSelectedItems] = useState([]);
+    const [selectedItems, setSelectedItems] = useState<number[]>([]);
 
     const [formData, setFormData] = useState({
         name: '',
         email: '',
         whatsapp: '',
     });
+
+    const history = useHistory();
 
 
     useEffect(() => {
@@ -88,10 +90,14 @@ const CreatePoint = () => {
     }
 
     function handleSelectItem(id: number){
-        let currentSelectedItems = [...selectedItems];
+
+        let alreadySelectedItem = selectedItems.findIndex(item => item === id);
         
-        if( currentSelectedItems[id] ){
-            //remove do array
+        if( alreadySelectedItem >= 0  ){
+            const filteredItems = selectedItems.filter(item => item !== id);
+            setSelectedItems(filteredItems);
+        }else{
+            setSelectedItems([...selectedItems, id]);
         }
 
     }
@@ -100,10 +106,31 @@ const CreatePoint = () => {
     function handleInputChange(event: ChangeEvent<HTMLInputElement>){
         const {name, value} = event.target;
         setFormData({ ...formData, [name]: value});
-        console.log(formData);
     }
-    
 
+    async function handleSubmit(event: FormEvent){
+
+        event.preventDefault();
+
+        const { name, email, whatsapp } = formData;
+        const uf = selectedUf;
+        const city = selectedCity;
+        const items = selectedItems;
+
+        const data = {
+            name,
+            email,
+            whatsapp,
+            uf,
+            city,
+            items
+        }
+
+        await api.post('points', data);
+        alert('Ponto de coleta cadastrado com sucesso!');
+        history.push('/');
+        
+    }
 
     return (
         <div id="page-create-point">
@@ -117,7 +144,7 @@ const CreatePoint = () => {
             </header>
 
             <main>
-                <form>
+                <form onSubmit={handleSubmit}>
                     <h1>Cadastro do ponto <br/> de coleta</h1>
 
                     <fieldset>
@@ -229,7 +256,11 @@ const CreatePoint = () => {
                         <ul className="items-grid">
 
                             {items.map(item => (
-                                <li key={item.id} onClick={() => handleSelectItem(item.id)}>
+                                <li 
+                                key={item.id} 
+                                onClick={() => handleSelectItem(item.id)}
+                                className={selectedItems.includes(item.id) ? 'selected' : ''}
+                                >
                                     <img src={item.imageUrl} alt={`Coleta de resíduos de ${item.title}`}/>
                                     <span>{item.title}</span>
                                 </li>
